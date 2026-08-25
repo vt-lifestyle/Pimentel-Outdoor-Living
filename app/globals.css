@@ -278,6 +278,9 @@ h2 { margin-bottom: 0; font-family: var(--serif); font-size: clamp(3rem, 6.2vw, 
 .form-contact-links { max-width: 440px; border-top: 1px solid rgba(255,255,255,.25); }
 .form-contact-links a { display: flex; min-width: 0; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,.25); padding: 1.15rem 0; overflow-wrap: anywhere; font-family: var(--serif); font-size: clamp(1rem, 1.5vw, 1.4rem); }
 .form-contact-links a span { flex: 0 0 auto; font-family: var(--sans); font-size: .52rem; letter-spacing: .14em; text-transform: uppercase; }
+.form-hours { display: flex; align-items: center; justify-content: space-between; gap: 1rem; border-bottom: 1px solid rgba(255,255,255,.25); padding: 1.15rem 0; }
+.form-hours strong { font-family: var(--serif); font-size: clamp(1rem, 1.5vw, 1.4rem); font-weight: 400; }
+.form-hours span { flex: 0 0 auto; color: rgba(255,255,255,.65); font-size: .52rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
 .project-form form { display: flex; flex-direction: column; gap: 2rem; }
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6rem; }
 .project-form label:not(.upload-button) { display: flex; min-width: 0; flex-direction: column; gap: .7rem; }
@@ -366,7 +369,7 @@ footer { background: #0e0f0c; color: #fff; }
   .wordmark { width: 68px; height: 68px; }
   .site-header.is-scrolled .wordmark { width: 58px; height: 58px; }
   .mobile-menu .wordmark, .mobile-menu .site-header.is-scrolled .wordmark { width: 84px; height: 84px; }
-  .header-cta, .header-actions > .language { display: none; }
+  .header-cta { display: none; }
   .header-actions { gap: .7rem; }
   .hero { min-height: 860px; }
   .hero-media { object-position: 64% center; }

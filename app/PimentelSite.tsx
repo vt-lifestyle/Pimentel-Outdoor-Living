@@ -7,7 +7,7 @@ import { business, copy, faqs, formOptions, imageAlts, instagramItems, Lang, nav
 const HERO_MEDIA: { desktop?: string; mobile?: string; poster: string } = {
   desktop: '/video/hero-outdoor-living-desktop.mp4',
   mobile: '/video/hero-outdoor-living-mobile.mp4',
-  poster: '/images/complete-backyard.webp',
+  poster: '/images/hero-outdoor-living.webp',
 };
 
 function HeroMedia({ lang }: { lang: Lang }) {
@@ -22,7 +22,7 @@ function HeroMedia({ lang }: { lang: Lang }) {
 
   if (HERO_MEDIA.desktop && !reducedMotion) {
     return (
-      <video className="hero-media" autoPlay muted loop playsInline preload="metadata" poster={HERO_MEDIA.poster} aria-hidden="true" tabIndex={-1}>
+      <video className="hero-media" autoPlay muted loop playsInline preload="auto" poster={HERO_MEDIA.poster} aria-hidden="true" tabIndex={-1}>
         {HERO_MEDIA.mobile && <source src={HERO_MEDIA.mobile} media="(max-width: 700px)" type="video/mp4" />}
         <source src={HERO_MEDIA.desktop} type="video/mp4" />
       </video>
@@ -274,7 +274,7 @@ function ProjectForm({ lang }: { lang: Lang }) {
 
   return (
     <section className="project-form section" id="start"><div className="page-shell form-grid">
-      <div className="form-intro reveal"><p className="eyebrow">{c.formEyebrow}</p><h2>{c.formTitle}</h2><p>{c.formBody}</p><div className="form-contact-links"><a href={business.phoneHref}>{business.phoneDisplay}<span>{c.call} ↗</span></a><a href={business.emailHref}>{business.email}<span>{c.email} ↗</span></a></div></div>
+      <div className="form-intro reveal"><p className="eyebrow">{c.formEyebrow}</p><h2>{c.formTitle}</h2><p>{c.formBody}</p><div className="form-contact-links"><a href={business.phoneHref}>{business.phoneDisplay}<span>{c.call} ↗</span></a><a href={business.emailHref}>{business.email}<span>{c.email} ↗</span></a><div className="form-hours"><strong>{c.hoursValue}</strong><span>{c.hoursLabel}</span></div></div></div>
       <form className="reveal" onSubmit={handlePrototypeSubmit} noValidate={false}>
         <div className="field-row"><label><span>{c.fullName} <i>{c.required}</i></span><input name="fullName" autoComplete="name" required /></label><label><span>{c.phone} <i>{c.required}</i></span><input name="phone" type="tel" inputMode="tel" autoComplete="tel" required /></label></div>
         <div className="field-row"><label><span>{c.email}</span><input name="email" type="email" inputMode="email" autoComplete="email" /></label><label><span>{c.city} <i>{c.required}</i></span><input name="city" autoComplete="postal-code" required /></label></div>
@@ -298,7 +298,7 @@ function Faq({ lang }: { lang: Lang }) {
 
 function Footer({ lang }: { lang: Lang }) {
   const c = copy[lang];
-  return <footer><div className="page-shell footer-top"><Wordmark lang={lang} /><p>{c.footerLine}</p><a href={business.phoneHref}>{business.phoneDisplay}</a></div><div className="page-shell footer-middle"><p>{c.footerStatementA}<br /><em>{c.footerStatementB}</em></p><a className="footer-cta" href="#start">{c.start}<span>↗</span></a></div><div className="page-shell footer-bottom"><div><span>{business.license}</span><span>{business.area}</span><span>{c.languageLine}</span></div><div><a href={business.emailHref}>{c.email} ↗</a><a href={business.instagram} target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href={business.facebook} target="_blank" rel="noopener noreferrer">Facebook ↗</a></div><span>© {new Date().getFullYear()} Pimentel Outdoor Living</span></div></footer>;
+  return <footer><div className="page-shell footer-top"><Wordmark lang={lang} /><p>{c.footerLine}</p><a href={business.phoneHref}>{business.phoneDisplay}</a></div><div className="page-shell footer-middle"><p>{c.footerStatementA}<br /><em>{c.footerStatementB}</em></p><a className="footer-cta" href="#start">{c.start}<span>↗</span></a></div><div className="page-shell footer-bottom"><div><span>{business.license}</span><span>{business.area}</span><span>{c.hoursLabel}: {c.hoursValue}</span><span>{c.languageLine}</span></div><div><a href={business.emailHref}>{c.email} ↗</a><a href={business.instagram} target="_blank" rel="noopener noreferrer">Instagram ↗</a><a href={business.facebook} target="_blank" rel="noopener noreferrer">Facebook ↗</a></div><span>© {new Date().getFullYear()} Pimentel Outdoor Living</span></div></footer>;
 }
 
 function MobileDock({ lang }: { lang: Lang }) {
