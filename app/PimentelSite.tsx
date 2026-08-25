@@ -4,14 +4,16 @@ import Image from 'next/image';
 import { FormEvent, TouchEvent, useEffect, useRef, useState } from 'react';
 import { business, copy, faqs, formOptions, imageAlts, instagramItems, Lang, nav, portfolio, processSteps, reviews, services } from './content';
 
-const HERO_MEDIA: { desktop?: string; mobile?: string; poster: string } = {
+const HERO_MEDIA = {
   desktop: '/video/hero-outdoor-living-desktop.mp4',
   mobile: '/video/hero-outdoor-living-mobile.mp4',
-  poster: '/images/hero-outdoor-living.webp',
+  desktopPoster: '/images/hero-video-desktop-poster.webp',
+  mobilePoster: '/images/hero-video-mobile-poster.webp',
 };
 
-function HeroMedia({ lang }: { lang: Lang }) {
+function HeroMedia() {
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
   useEffect(() => {
     const query = window.matchMedia('(prefers-reduced-motion: reduce)');
     const update = () => setReducedMotion(query.matches);
@@ -20,16 +22,23 @@ function HeroMedia({ lang }: { lang: Lang }) {
     return () => query.removeEventListener('change', update);
   }, []);
 
+  const firstFrame = (
+    <div className="hero-media hero-fallback" aria-hidden="true">
+      <Image className="hero-fallback-desktop" src={HERO_MEDIA.desktopPoster} alt="" fill priority sizes="100vw" />
+      <Image className="hero-fallback-mobile" src={HERO_MEDIA.mobilePoster} alt="" fill priority sizes="100vw" />
+    </div>
+  );
+
   if (HERO_MEDIA.desktop && !reducedMotion) {
-    return (
-      <video className="hero-media" autoPlay muted loop playsInline preload="auto" poster={HERO_MEDIA.poster} aria-hidden="true" tabIndex={-1}>
+    return <>{firstFrame}
+      <video className={`hero-media hero-video ${videoReady ? 'is-ready' : ''}`} autoPlay muted loop playsInline preload="auto" onLoadedData={() => setVideoReady(true)} onCanPlay={() => setVideoReady(true)} onError={() => setVideoReady(false)} aria-hidden="true" tabIndex={-1}>
         {HERO_MEDIA.mobile && <source src={HERO_MEDIA.mobile} media="(max-width: 700px)" type="video/mp4" />}
         <source src={HERO_MEDIA.desktop} type="video/mp4" />
       </video>
-    );
+    </>;
   }
 
-  return <Image className="hero-media" src={HERO_MEDIA.poster} alt={imageAlts.hero[lang]} fill priority sizes="100vw" />;
+  return firstFrame;
 }
 
 function LanguageControl({ lang, setLang }: { lang: Lang; setLang: (lang: Lang) => void }) {
@@ -103,7 +112,7 @@ function Hero({ lang }: { lang: Lang }) {
   const c = copy[lang];
   return (
     <section className="hero" id="top">
-      <HeroMedia lang={lang} /><div className="hero-shade" />
+      <HeroMedia /><div className="hero-shade" />
       <div className="hero-content page-shell">
         <p className="eyebrow hero-enter enter-1">{c.heroEyebrow}</p>
         <h1 className="hero-title"><span className="hero-enter enter-2">{c.heroTitleA}</span><em className="hero-enter enter-3">{c.heroTitleB}</em></h1>
