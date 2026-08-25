@@ -14,6 +14,7 @@ const HERO_MEDIA = {
 function HeroMedia() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
   useEffect(() => {
     const query = window.matchMedia('(prefers-reduced-motion: reduce)');
     const update = () => setReducedMotion(query.matches);
@@ -21,6 +22,35 @@ function HeroMedia() {
     query.addEventListener('change', update);
     return () => query.removeEventListener('change', update);
   }, []);
+
+  useEffect(() => {
+    const requestPlayback = () => {
+      const video = videoRef.current;
+      if (!video || reducedMotion) return;
+      video.muted = true;
+      void video.play().catch(() => undefined);
+    };
+    requestPlayback();
+    const resumeWhenVisible = () => document.visibilityState === 'visible' && requestPlayback();
+    document.addEventListener('visibilitychange', resumeWhenVisible);
+    window.addEventListener('pageshow', requestPlayback);
+    window.addEventListener('pointerdown', requestPlayback, { once: true });
+    window.addEventListener('keydown', requestPlayback, { once: true });
+    return () => {
+      document.removeEventListener('visibilitychange', resumeWhenVisible);
+      window.removeEventListener('pageshow', requestPlayback);
+      window.removeEventListener('pointerdown', requestPlayback);
+      window.removeEventListener('keydown', requestPlayback);
+    };
+  }, [reducedMotion]);
+
+  const handleVideoReady = () => {
+    setVideoReady(true);
+    const video = videoRef.current;
+    if (!video) return;
+    video.muted = true;
+    void video.play().catch(() => undefined);
+  };
 
   const firstFrame = (
     <div className="hero-media hero-fallback" aria-hidden="true">
@@ -31,7 +61,7 @@ function HeroMedia() {
 
   if (HERO_MEDIA.desktop && !reducedMotion) {
     return <>{firstFrame}
-      <video className={`hero-media hero-video ${videoReady ? 'is-ready' : ''}`} autoPlay muted loop playsInline preload="auto" onLoadedData={() => setVideoReady(true)} onCanPlay={() => setVideoReady(true)} onError={() => setVideoReady(false)} aria-hidden="true" tabIndex={-1}>
+      <video ref={videoRef} className={`hero-media hero-video ${videoReady ? 'is-ready' : ''}`} autoPlay muted loop playsInline preload="auto" onLoadedData={handleVideoReady} onCanPlay={handleVideoReady} onError={() => setVideoReady(false)} aria-hidden="true" tabIndex={-1}>
         {HERO_MEDIA.mobile && <source src={HERO_MEDIA.mobile} media="(max-width: 700px)" type="video/mp4" />}
         <source src={HERO_MEDIA.desktop} type="video/mp4" />
       </video>
