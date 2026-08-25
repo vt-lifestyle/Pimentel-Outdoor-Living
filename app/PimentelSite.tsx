@@ -28,7 +28,8 @@ function HeroMedia() {
       const video = videoRef.current;
       if (!video || reducedMotion) return;
       video.muted = true;
-      void video.play().catch(() => undefined);
+      if (video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) setVideoReady(true);
+      void video.play().then(() => setVideoReady(true)).catch(() => undefined);
     };
     requestPlayback();
     const resumeWhenVisible = () => document.visibilityState === 'visible' && requestPlayback();
@@ -49,7 +50,7 @@ function HeroMedia() {
     const video = videoRef.current;
     if (!video) return;
     video.muted = true;
-    void video.play().catch(() => undefined);
+    void video.play().then(() => setVideoReady(true)).catch(() => undefined);
   };
 
   const firstFrame = (
